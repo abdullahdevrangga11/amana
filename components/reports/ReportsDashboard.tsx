@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, TrendingUp, FileText, ArrowRight, Sparkles } from "lucide-react";
+import { Download, TrendingUp, FileText, ArrowRight, Sparkles, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
+
+const AMANA_VAULT = "0xAC104718167145E4f315EA78c49285870bA66615";
+const MANTLESCAN = "https://sepolia.mantlescan.xyz";
 
 // ───────────────────────────────────────────────────────────
 //  Types — mirror what /api/runs returns
@@ -228,18 +231,30 @@ export function ReportsDashboard() {
       {/* Attestation feed — real */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <Badge variant="default">// erc-8004 attestation feed</Badge>
-            <Badge variant="outline">
-              <FileText className="w-3 h-3" />
-              {aggregate.totalAttestations} events
-            </Badge>
+            <div className="flex items-center gap-2">
+              <a
+                href={`${MANTLESCAN}/address/${AMANA_VAULT}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-strong)] px-3 h-7 text-[11px] font-mono uppercase tracking-[0.06em] hover:border-[var(--color-text)] hover:bg-[var(--color-bg-soft)] transition-colors"
+              >
+                <ExternalLink className="w-3 h-3" />
+                View vault on Mantlescan
+              </a>
+              <Badge variant="outline">
+                <FileText className="w-3 h-3" />
+                {aggregate.totalAttestations} events
+              </Badge>
+            </div>
           </div>
           <CardTitle>On-chain reputation events</CardTitle>
           <CardDescription>
-            Every decision is signed by an agent identity and emitted as a
-            ReputationEvent. The feed below is sourced from this deployment&apos;s
-            actual orchestration history.
+            Each row is a signed agent decision from this deployment&apos;s
+            orchestration history; click a hash to inspect that run. The vault
+            contract and its live ERC-8004 events are verifiable on Mantlescan
+            via the link above.
           </CardDescription>
         </CardHeader>
         <CardContent>
